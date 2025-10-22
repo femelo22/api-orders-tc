@@ -10,6 +10,7 @@ import com.br.tc.core.model.Payment;
 import com.br.tc.core.model.enums.OrderStatus;
 import com.br.tc.core.model.enums.PaymentStatus;
 import com.br.tc.core.ports.service.OrderServicePort;
+import com.br.tc.core.ports.service.PaymentPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,8 +37,12 @@ public class OrderController {
 
     @Autowired
     private OrderServicePort service;
+
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private PaymentPort paymentPort;
 
 
     @Operation(summary = "Creates and Checkout an order", description = "Creates and Checkout an order.")
@@ -53,7 +58,7 @@ public class OrderController {
 
         //Integração mercado pago e gravação de qrcode
         //TODO: Mudar lógica.. chamar o serivço de pagamentos para gerar o QRCode e atualizar status
-//        String  qrCode = mercadoPagoService.gerarQrCode(orderCreated);
+        String  qrCode = paymentPort.gerarQrCode(orderCreated);
 //        orderCreated.getPayment().setQrCode(qrCode);
 //        Payment paymentUpdated = paymentService.updatePayment(orderCreated.getPayment());
 //        orderCreated.setPayment(paymentUpdated);

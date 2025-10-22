@@ -1,6 +1,5 @@
 package com.br.tc.adapters.dtos.order;
 
-import com.br.tc.adapters.dtos.client.ClientFilter;
 import com.br.tc.core.model.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +22,7 @@ public class OrderFilter {
     private BigDecimal totalPriceGreaterThan;
     private LocalDate dateFrom;
     private LocalDate dateTo;
-    private ClientFilter client;
+    private Integer clientId;
     private OrderStatus statusNotEquals;
 }
 

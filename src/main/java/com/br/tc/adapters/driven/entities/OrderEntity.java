@@ -1,6 +1,6 @@
 package com.br.tc.adapters.driven.entities;
 
-import com.fastfood.api.core.model.enums.OrderStatus;
+import com.br.tc.core.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,7 +26,7 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private ClientEntity client;
+    private Integer clientId;
 
     @Column(name = "cpf")
     private String cpf;
@@ -43,7 +43,7 @@ public class OrderEntity {
     private LocalDateTime date;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PaymentEntity payment;
+    private String paymentType;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

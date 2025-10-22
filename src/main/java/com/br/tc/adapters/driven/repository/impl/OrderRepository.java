@@ -2,6 +2,7 @@ package com.br.tc.adapters.driven.repository.impl;
 
 import com.br.tc.adapters.driven.entities.OrderEntity;
 import com.br.tc.adapters.driven.repository.SpringOrderRepository;
+import com.br.tc.adapters.dtos.order.OrderFilter;
 import com.br.tc.adapters.mappers.OrderMapper;
 import com.br.tc.core.model.Order;
 import com.br.tc.core.ports.repository.OrderRepositoryPort;
@@ -30,7 +31,8 @@ public class OrderRepository implements OrderRepositoryPort {
 
         OrderEntity orderEntityToSave = orderMapper.orderToOrderEntity(order);
         orderEntityToSave.getItems().forEach(orderItemEntity -> orderItemEntity.setOrder(orderEntityToSave));
-        orderEntityToSave.getPayment().setOrder(orderEntityToSave);
+//        orderEntityToSave.getPayment().setOrder(orderEntityToSave);
+        orderEntityToSave.setPaymentType(orderEntityToSave.getPaymentType());
         OrderEntity orderEntitySaved = this.springOrderRepository.save(orderEntityToSave);
 
         return orderMapper.orderEntityToOrder(orderEntitySaved);

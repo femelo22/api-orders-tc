@@ -25,7 +25,7 @@ public class OrderItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false, updatable = false)
-    private ProductEntity product;
+    private Integer productId;
 
     @Column(name = "amount")
     private Integer amount;

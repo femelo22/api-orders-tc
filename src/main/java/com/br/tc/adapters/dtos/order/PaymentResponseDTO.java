@@ -1,7 +1,7 @@
 package com.br.tc.adapters.dtos.order;
 
-import com.fastfood.api.core.model.enums.PaymentStatus;
-import com.fastfood.api.core.model.enums.PaymentType;
+import com.br.tc.core.model.enums.PaymentStatus;
+import com.br.tc.core.model.enums.PaymentType;
 
 public record PaymentResponseDTO(
         Long id,
