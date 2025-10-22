@@ -57,11 +57,13 @@ public class OrderController {
         Order orderCreated = this.service.createAndCheckout(orderToCreate);
 
         //Integração mercado pago e gravação de qrcode
-        //TODO: Mudar lógica.. chamar o serivço de pagamentos para gerar o QRCode e atualizar status
+        //TODO: Mudar lógica.. chamar o serivço de pagamentos para gerar o QRCode
         String  qrCode = paymentPort.gerarQrCode(orderCreated);
-//        orderCreated.getPayment().setQrCode(qrCode);
-//        Payment paymentUpdated = paymentService.updatePayment(orderCreated.getPayment());
-//        orderCreated.setPayment(paymentUpdated);
+        orderCreated.getPayment().setQrCode(qrCode);
+
+        //TODO: Mudar lógica.. chamar serviço de pagamentos para atualizar o status do Pagamento
+        Payment paymentUpdated = paymentPort.updatePayment(orderCreated.getPayment());
+        orderCreated.setPayment(paymentUpdated);
 
         return ResponseEntity.ok().body(new OrderCheckoutResponseDTO("Pedido enviado para fila de processamento.", orderMapper.orderToOrderResponseDTO(orderCreated)));
     }
