@@ -55,7 +55,7 @@ public class OrderController {
 
         Order orderCreated = this.service.createAndCheckout(orderToCreate);
 
-        paymentAdapter.gerarPagamento(new OrderPayment(orderCheckoutRequestDTO.paymentType(), orderCreated.getId()));
+        paymentAdapter.gerarPagamento(new OrderPayment(orderCheckoutRequestDTO.paymentType(), orderCreated));
 
         return ResponseEntity.ok().body(new OrderCheckoutResponseDTO("Pedido enviado para fila de processamento.", orderMapper.orderToOrderResponseDTO(orderCreated)));
     }
