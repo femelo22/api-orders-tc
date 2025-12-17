@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "api-pagamentos", path = "${url.api-pagamento}")
+@FeignClient(name = "api-pagamentos", url = "${url.api-pagamento}")
 public interface PaymentClient {
 
     @PostMapping("/submit")
