@@ -20,6 +20,8 @@ public class OrderItem {
         this.notes = notes;
     }
 
+    public OrderItem() {}
+
     public Long getId() {
         return id;
     }

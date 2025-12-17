@@ -26,6 +26,8 @@ public class Order {
         this.items = items;
     }
 
+    public Order() { }
+
     public Long getId() {
         return id;
     }

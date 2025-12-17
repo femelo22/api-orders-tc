@@ -2,7 +2,10 @@ package com.br.tc.adapters.driver.controller;
 
 import com.br.tc.adapters.driver.mercadopago.PaymentAdapter;
 import com.br.tc.adapters.dtos.order.*;
-import com.br.tc.adapters.mappers.OrderMapper;
+import com.br.tc.adapters.mappers.OrderConverter;
+import com.br.tc.adapters.mappers.OrderItemResponseConverter;
+//import com.br.tc.adapters.mappers.OrderMapper;
+import com.br.tc.adapters.mappers.OrderResponseConverter;
 import com.br.tc.core.model.Order;
 import com.br.tc.core.model.enums.OrderStatus;
 import com.br.tc.core.ports.service.OrderServicePort;
@@ -33,17 +36,11 @@ public class OrderController {
     @Autowired
     private OrderServicePort service;
 
-    @Autowired
-    private OrderMapper orderMapper;
+//    @Autowired
+//    private OrderMapper orderMapper;
 
     @Autowired
     private PaymentAdapter paymentAdapter;
-
-    public OrderController(OrderServicePort service, OrderMapper orderMapper, PaymentAdapter paymentAdapter) {
-        this.service = service;
-        this.orderMapper = orderMapper;
-        this.paymentAdapter = paymentAdapter;
-    }
 
     @Operation(summary = "Creates and Checkout an order", description = "Creates and Checkout an order.")
     @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Order.class)))
@@ -51,13 +48,13 @@ public class OrderController {
     @Transactional
     public ResponseEntity<OrderCheckoutResponseDTO> checkout(@Valid @RequestBody OrderCheckoutRequestDTO orderCheckoutRequestDTO) {
 
-        Order orderToCreate = orderMapper.orderCheckoutRequestDTOToOrder(orderCheckoutRequestDTO);
+        Order orderToCreate = OrderConverter.toEntity(orderCheckoutRequestDTO);
 
         Order orderCreated = this.service.createAndCheckout(orderToCreate);
 
         paymentAdapter.gerarPagamento(new OrderPayment(orderCheckoutRequestDTO.paymentType(), orderCreated));
 
-        return ResponseEntity.ok().body(new OrderCheckoutResponseDTO("Pedido enviado para fila de processamento.", orderMapper.orderToOrderResponseDTO(orderCreated)));
+        return ResponseEntity.ok().body(new OrderCheckoutResponseDTO("Pedido enviado para fila de processamento.", OrderResponseConverter.toDto(orderCreated)));
     }
 
     @Operation(summary = "Returns orders by filter", description = "Return orders by filter.")
@@ -75,7 +72,7 @@ public class OrderController {
                                                                   }) Pageable pageable) {
         filter.setStatusNotEquals(OrderStatus.FINISHED);
         Page<Order> page = service.findAllByFilter(filter, pageable);
-        List<OrderResponseDTO> list = orderMapper.ordersToOrderResponseDTOs(page.getContent());
+        List<OrderResponseDTO> list = OrderResponseConverter.toDtoList(page.getContent());
         return ResponseEntity.ok().body(new PageImpl<>(list, pageable, page.getTotalElements()));
     }
 }
